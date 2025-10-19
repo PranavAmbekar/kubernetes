@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K8s Commands - Quick Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fbfbfd;
+            --card-bg: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --border: #d2d2d7;
+            --code-bg: #f5f5f7;
+            --success: #34c759;
+            --warning: #ff9500;
+            --danger: #ff3b30;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --card-bg: #1c1c1e;
+                --text-primary: #f5f5f7;
+                --text-secondary: #86868b;
+                --accent: #0a84ff;
+                --border: #38383a;
+                --code-bg: #2c2c2e;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "SF Pro Display", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .header {
+                background: rgba(29, 29, 31, 0.72);
+            }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .k8s-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #326ce5, #0071e3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            background: var(--code-bg);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+            transition: all 0.2s;
+        }
+
+        .search:focus-within {
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .search input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            width: 100%;
+            font-size: 0.95rem;
+            margin-left: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #326ce5, #0071e3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+
+        .category-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            padding: 0.25rem;
+            background: var(--code-bg);
+            border-radius: 12px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .category-btn:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .category-btn.active {
+            background: var(--card-bg);
+            color: var(--accent);
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .commands-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .command-section {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        .command-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .command-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .command-group h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+
+        .command-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .command-item:hover {
+            background: var(--code-bg);
+        }
+
+        .command-code {
+            font-family: "SF Mono", Monaco, "Courier New", monospace;
+            background: var(--code-bg);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .command-code:hover {
+            transform: translateX(2px);
+        }
+
+        .command-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            min-width: 200px;
+        }
+
+        .copy-hint {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .copy-hint.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quick-tips {
+            background: linear-gradient(135deg, #326ce5, #0071e3);
+            color: white;
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quick-tips h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .quick-tips ul {
+            list-style: none;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .quick-tips li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .quick-tips li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            .search {
+                width: auto;
+                flex: 1;
+                max-width: 200px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .command-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .command-desc {
+                min-width: auto;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="k8s-icon">K8s</div>
+                <span>Commands</span>
+            </div>
+            <div class="search">
+                <span>🔍</span>
+                <input type="text" id="searchInput" placeholder="Search commands...">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Kubernetes Commands</h1>
+            <p>Your quick reference for K8s debugging and operations</p>
+        </div>
+
+        <div class="category-nav">
+            <button class="category-btn active" data-category="pods">Pods</button>
+            <button class="category-btn" data-category="deployments">Deployments</button>
+            <button class="category-btn" data-category="services">Services</button>
+            <button class="category-btn" data-category="configmaps">ConfigMaps</button>
+            <button class="category-btn" data-category="secrets">Secrets</button>
+            <button class="category-btn" data-category="ingress">Ingress</button>
+            <button class="category-btn" data-category="statefulsets">StatefulSets</button>
+            <button class="category-btn" data-category="namespaces">Namespaces</button>
+            <button class="category-btn" data-category="nodes">Nodes</button>
+            <button class="category-btn" data-category="debugging">Debugging</button>
+        </div>
+
+        <div class="commands-grid">
+            <!-- Pods Section -->
+            <div class="command-section active" data-category="pods">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #34c759, #30d158);">🚀</div>
+                    <div>
+                        <h2 class="section-title">Pods</h2>
+                        <p class="section-desc">Smallest deployable units in Kubernetes</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Basic Operations</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get pods</div>
+                        <div class="command-desc">List all pods in current namespace</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get pods -A</div>
+                        <div class="command-desc">List all pods in all namespaces</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get pod &lt;pod-name&gt; -o yaml</div>
+                        <div class="command-desc">Get pod details in YAML format</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe pod &lt;pod-name&gt;</div>
+                        <div class="command-desc">Show detailed pod information</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete pod &lt;pod-name&gt;</div>
+                        <div class="command-desc">Delete a specific pod</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl logs &lt;pod-name&gt;</div>
+                        <div class="command-desc">View pod logs</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl logs &lt;pod-name&gt; -c &lt;container&gt;</div>
+                        <div class="command-desc">View logs from specific container</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl logs -f &lt;pod-name&gt;</div>
+                        <div class="command-desc">Stream pod logs in real-time</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl exec -it &lt;pod-name&gt; -- /bin/bash</div>
+                        <div class="command-desc">Get shell access to pod</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl port-forward &lt;pod-name&gt; 8080:80</div>
+                        <div class="command-desc">Forward local port to pod</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deployments Section -->
+            <div class="command-section" data-category="deployments">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #0071e3, #0077ed);">📦</div>
+                    <div>
+                        <h2 class="section-title">Deployments</h2>
+                        <p class="section-desc">Manage stateless application deployments</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Deployment Management</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get deployments</div>
+                        <div class="command-desc">List all deployments</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create deployment &lt;name&gt; --image=&lt;image&gt;</div>
+                        <div class="command-desc">Create new deployment</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl scale deployment &lt;name&gt; --replicas=3</div>
+                        <div class="command-desc">Scale deployment replicas</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl set image deployment/&lt;name&gt; &lt;container&gt;=&lt;image&gt;</div>
+                        <div class="command-desc">Update deployment image</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl rollout status deployment/&lt;name&gt;</div>
+                        <div class="command-desc">Check rollout status</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl rollout history deployment/&lt;name&gt;</div>
+                        <div class="command-desc">View rollout history</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl rollout undo deployment/&lt;name&gt;</div>
+                        <div class="command-desc">Rollback to previous version</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl rollout restart deployment/&lt;name&gt;</div>
+                        <div class="command-desc">Restart deployment pods</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl edit deployment &lt;name&gt;</div>
+                        <div class="command-desc">Edit deployment in place</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete deployment &lt;name&gt;</div>
+                        <div class="command-desc">Delete deployment</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div class="command-section" data-category="services">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #ff9500, #ff9f0a);">🔌</div>
+                    <div>
+                        <h2 class="section-title">Services</h2>
+                        <p class="section-desc">Network access to pods</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Service Operations</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get services</div>
+                        <div class="command-desc">List all services</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl expose deployment &lt;name&gt; --port=80 --type=LoadBalancer</div>
+                        <div class="command-desc">Expose deployment as service</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe service &lt;name&gt;</div>
+                        <div class="command-desc">Get service details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get endpoints</div>
+                        <div class="command-desc">List service endpoints</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete service &lt;name&gt;</div>
+                        <div class="command-desc">Delete service</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get svc &lt;name&gt; -o yaml</div>
+                        <div class="command-desc">Export service as YAML</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ConfigMaps Section -->
+            <div class="command-section" data-category="configmaps">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #5856d6, #5e5ce6);">⚙️</div>
+                    <div>
+                        <h2 class="section-title">ConfigMaps</h2>
+                        <p class="section-desc">Store configuration data</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>ConfigMap Management</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get configmaps</div>
+                        <div class="command-desc">List all configmaps</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-literal=key=value</div>
+                        <div class="command-desc">Create configmap from literal</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-file=&lt;path&gt;</div>
+                        <div class="command-desc">Create from file</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe configmap &lt;name&gt;</div>
+                        <div class="command-desc">Show configmap details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl edit configmap &lt;name&gt;</div>
+                        <div class="command-desc">Edit configmap</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete configmap &lt;name&gt;</div>
+                        <div class="command-desc">Delete configmap</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secrets Section -->
+            <div class="command-section" data-category="secrets">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #ff3b30, #ff453a);">🔐</div>
+                    <div>
+                        <h2 class="section-title">Secrets</h2>
+                        <p class="section-desc">Manage sensitive data</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Secret Operations</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get secrets</div>
+                        <div class="command-desc">List all secrets</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create secret generic &lt;name&gt; --from-literal=key=value</div>
+                        <div class="command-desc">Create generic secret</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create secret docker-registry &lt;name&gt; --docker-server=&lt;server&gt;</div>
+                        <div class="command-desc">Create docker registry secret</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe secret &lt;name&gt;</div>
+                        <div class="command-desc">Show secret details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get secret &lt;name&gt; -o yaml</div>
+                        <div class="command-desc">Get secret in YAML</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete secret &lt;name&gt;</div>
+                        <div class="command-desc">Delete secret</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingress Section -->
+            <div class="command-section" data-category="ingress">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #00c7be, #00d4aa);">🌐</div>
+                    <div>
+                        <h2 class="section-title">Ingress</h2>
+                        <p class="section-desc">Manage external access to services</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Ingress Management</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get ingress</div>
+                        <div class="command-desc">List all ingress resources</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe ingress &lt;name&gt;</div>
+                        <div class="command-desc">Show ingress details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl edit ingress &lt;name&gt;</div>
+                        <div class="command-desc">Edit ingress rules</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete ingress &lt;name&gt;</div>
+                        <div class="command-desc">Delete ingress</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get ingress &lt;name&gt; -o yaml</div>
+                        <div class="command-desc">Export ingress configuration</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- StatefulSets Section -->
+            <div class="command-section" data-category="statefulsets">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #af52de, #bf5af2);">💾</div>
+                    <div>
+                        <h2 class="section-title">StatefulSets</h2>
+                        <p class="section-desc">Manage stateful applications</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>StatefulSet Operations</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get statefulsets</div>
+                        <div class="command-desc">List all statefulsets</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe statefulset &lt;name&gt;</div>
+                        <div class="command-desc">Show statefulset details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl scale statefulset &lt;name&gt; --replicas=3</div>
+                        <div class="command-desc">Scale statefulset</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl rollout status statefulset &lt;name&gt;</div>
+                        <div class="command-desc">Check rollout status</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete statefulset &lt;name&gt;</div>
+                        <div class="command-desc">Delete statefulset</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get pvc</div>
+                        <div class="command-desc">List persistent volume claims</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Namespaces Section -->
+            <div class="command-section" data-category="namespaces">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #32ade6, #007aff);">📁</div>
+                    <div>
+                        <h2 class="section-title">Namespaces</h2>
+                        <p class="section-desc">Organize cluster resources</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Namespace Management</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get namespaces</div>
+                        <div class="command-desc">List all namespaces</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl create namespace &lt;name&gt;</div>
+                        <div class="command-desc">Create new namespace</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl config set-context --current --namespace=&lt;name&gt;</div>
+                        <div class="command-desc">Switch default namespace</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl delete namespace &lt;name&gt;</div>
+                        <div class="command-desc">Delete namespace</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get all -n &lt;namespace&gt;</div>
+                        <div class="command-desc">Get all resources in namespace</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nodes Section -->
+            <div class="command-section" data-category="nodes">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #ff6b35, #ff8c42);">🖥️</div>
+                    <div>
+                        <h2 class="section-title">Nodes</h2>
+                        <p class="section-desc">Manage cluster nodes</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Node Operations</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get nodes</div>
+                        <div class="command-desc">List all nodes</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe node &lt;name&gt;</div>
+                        <div class="command-desc">Show node details</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl top nodes</div>
+                        <div class="command-desc">Display node resource usage</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl cordon &lt;node&gt;</div>
+                        <div class="command-desc">Mark node as unschedulable</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl drain &lt;node&gt;</div>
+                        <div class="command-desc">Drain node for maintenance</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl uncordon &lt;node&gt;</div>
+                        <div class="command-desc">Mark node as schedulable</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debugging Section -->
+            <div class="command-section" data-category="debugging">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #ff3b30, #ff453a);">🔍</div>
+                    <div>
+                        <h2 class="section-title">Debugging</h2>
+                        <p class="section-desc">Troubleshooting commands</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3>Troubleshooting</h3>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get events --sort-by='.lastTimestamp'</div>
+                        <div class="command-desc">View recent cluster events</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl top pods</div>
+                        <div class="command-desc">Show pod resource usage</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl describe pod &lt;pod&gt; | grep -A 5 Events</div>
+                        <div class="command-desc">Check pod events</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl logs &lt;pod&gt; --previous</div>
+                        <div class="command-desc">Get previous container logs</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get pod &lt;pod&gt; -o jsonpath='{.status.phase}'</div>
+                        <div class="command-desc">Check pod status</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl debug node/&lt;node&gt; -it --image=ubuntu</div>
+                        <div class="command-desc">Debug node with container</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl run tmp-shell --rm -i --tty --image ubuntu -- /bin/bash</div>
+                        <div class="command-desc">Create temporary debug pod</div>
+                    </div>
+                    <div class="command-item">
+                        <div class="command-code">kubectl get componentstatuses</div>
+                        <div class="command-desc">Check cluster component health</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-tips">
+            <h3>💡 Pro Tips</h3>
+            <ul>
+                <li>Use <code>-o wide</code> flag for more detailed output</li>
+                <li>Add <code>--watch</code> to monitor resource changes in real-time</li>
+                <li>Use <code>kubectl explain &lt;resource&gt;</code> to get field descriptions</li>
+                <li>Set alias: <code>alias k=kubectl</code> for faster typing</li>
+                <li>Use <code>kubectl api-resources</code> to list all available resources</li>
+                <li>Add <code>--dry-run=client -o yaml</code> to generate YAML without creating resources</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="copy-hint" id="copyHint">Command copied! 📋</div>
+
+    <script>
+        // Category navigation
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const sections = document.querySelectorAll('.command-section');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                
+                // Update active button
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Show corresponding section
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.dataset.category === category) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Copy command to clipboard
+        const commandCodes = document.querySelectorAll('.command-code');
+        const copyHint = document.getElementById('copyHint');
+
+        commandCodes.forEach(code => {
+            code.addEventListener('click', () => {
+                const text = code.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    copyHint.classList.add('show');
+                    setTimeout(() => {
+                        copyHint.classList.remove('show');
+                    }, 2000);
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const commandItems = document.querySelectorAll('.command-item');
+            
+            commandItems.forEach(item => {
+                const code = item.querySelector('.command-code').textContent.toLowerCase();
+                const desc = item.querySelector('.command-desc').textContent.toLowerCase();
+                
+                if (code.includes(searchTerm) || desc.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show all sections when searching
+            if (searchTerm) {
+                sections.forEach(section => {
+                    section.classList.add('active');
+                });
+            } else {
+                // Reset to original view
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.querySelector('.command-section[data-category="pods"]').classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
