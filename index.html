@@ -118,6 +118,60 @@
             padding: 2rem;
         }
 
+        .dynamic-inputs {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .inputs-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .input-field {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--code-bg);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        .placeholder-highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
         .hero {
             text-align: center;
             padding: 3rem 0;
@@ -388,6 +442,52 @@
             <button class="category-btn" data-category="debugging">Debugging</button>
         </div>
 
+        <div class="dynamic-inputs">
+            <h3 class="inputs-title">🎯 Dynamic Command Builder</h3>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="input-label" for="podName">Pod Name</label>
+                    <input type="text" id="podName" class="input-field" placeholder="my-pod" value="my-pod">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="namespace">Namespace</label>
+                    <input type="text" id="namespace" class="input-field" placeholder="default" value="default">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="serviceName">Service Name</label>
+                    <input type="text" id="serviceName" class="input-field" placeholder="my-service" value="my-service">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="deploymentName">Deployment Name</label>
+                    <input type="text" id="deploymentName" class="input-field" placeholder="my-deployment" value="my-deployment">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="containerName">Container Name</label>
+                    <input type="text" id="containerName" class="input-field" placeholder="my-container" value="my-container">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="nodeName">Node Name</label>
+                    <input type="text" id="nodeName" class="input-field" placeholder="node-1" value="node-1">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="configMapName">ConfigMap Name</label>
+                    <input type="text" id="configMapName" class="input-field" placeholder="my-config" value="my-config">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="secretName">Secret Name</label>
+                    <input type="text" id="secretName" class="input-field" placeholder="my-secret" value="my-secret">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="statefulSetName">StatefulSet Name</label>
+                    <input type="text" id="statefulSetName" class="input-field" placeholder="my-statefulset" value="my-statefulset">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="ingressName">Ingress Name</label>
+                    <input type="text" id="ingressName" class="input-field" placeholder="my-ingress" value="my-ingress">
+                </div>
+            </div>
+        </div>
+
         <div class="commands-grid">
             <!-- Pods Section -->
             <div class="command-section active" data-category="pods">
@@ -406,7 +506,7 @@
                         <div class="command-desc">List all pods in current namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get pods -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get pods -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List all pods in specific namespace</div>
                     </div>
                     <div class="command-item">
@@ -418,59 +518,59 @@
                         <div class="command-desc">List all pods in all namespaces (shorthand)</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get pod &lt;pod-name&gt; -o yaml</div>
+                        <div class="command-code">kubectl get pod <span class="placeholder-highlight pod-placeholder">my-pod</span> -o yaml</div>
                         <div class="command-desc">Get pod details in YAML format</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get pod &lt;pod-name&gt; -n &lt;namespace&gt; -o yaml</div>
+                        <div class="command-code">kubectl get pod <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span> -o yaml</div>
                         <div class="command-desc">Get pod details in YAML format from specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe pod &lt;pod-name&gt;</div>
+                        <div class="command-code">kubectl describe pod <span class="placeholder-highlight pod-placeholder">my-pod</span></div>
                         <div class="command-desc">Show detailed pod information</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl describe pod <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show detailed pod information from specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete pod &lt;pod-name&gt;</div>
+                        <div class="command-code">kubectl delete pod <span class="placeholder-highlight pod-placeholder">my-pod</span></div>
                         <div class="command-desc">Delete a specific pod</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete pod &lt;pod-name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl delete pod <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Delete a pod from specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs &lt;pod-name&gt;</div>
+                        <div class="command-code">kubectl logs <span class="placeholder-highlight pod-placeholder">my-pod</span></div>
                         <div class="command-desc">View pod logs</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl logs <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">View pod logs from specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs &lt;pod-name&gt; -c &lt;container&gt;</div>
+                        <div class="command-code">kubectl logs <span class="placeholder-highlight pod-placeholder">my-pod</span> -c <span class="placeholder-highlight container-placeholder">my-container</span></div>
                         <div class="command-desc">View logs from specific container</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs -f &lt;pod-name&gt;</div>
+                        <div class="command-code">kubectl logs -f <span class="placeholder-highlight pod-placeholder">my-pod</span></div>
                         <div class="command-desc">Stream pod logs in real-time</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs -f &lt;pod-name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl logs -f <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Stream pod logs from specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl exec -it &lt;pod-name&gt; -- /bin/bash</div>
+                        <div class="command-code">kubectl exec -it <span class="placeholder-highlight pod-placeholder">my-pod</span> -- /bin/bash</div>
                         <div class="command-desc">Get shell access to pod</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl exec -it &lt;pod-name&gt; -n &lt;namespace&gt; -- /bin/bash</div>
+                        <div class="command-code">kubectl exec -it <span class="placeholder-highlight pod-placeholder">my-pod</span> -n <span class="placeholder-highlight namespace-placeholder">default</span> -- /bin/bash</div>
                         <div class="command-desc">Get shell access to pod in specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl port-forward &lt;pod-name&gt; 8080:80</div>
+                        <div class="command-code">kubectl port-forward <span class="placeholder-highlight pod-placeholder">my-pod</span> 8080:80</div>
                         <div class="command-desc">Forward local port to pod</div>
                     </div>
                 </div>
@@ -493,7 +593,7 @@
                         <div class="command-desc">List all deployments</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get deployments -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get deployments -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List deployments in specific namespace</div>
                     </div>
                     <div class="command-item">
@@ -501,63 +601,63 @@
                         <div class="command-desc">List deployments in all namespaces</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create deployment &lt;name&gt; --image=&lt;image&gt;</div>
+                        <div class="command-code">kubectl create deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --image=nginx:latest</div>
                         <div class="command-desc">Create new deployment</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create deployment &lt;name&gt; --image=&lt;image&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl create deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --image=nginx:latest -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create deployment in specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl scale deployment &lt;name&gt; --replicas=3</div>
+                        <div class="command-code">kubectl scale deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --replicas=3</div>
                         <div class="command-desc">Scale deployment replicas</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl scale deployment &lt;name&gt; --replicas=3 -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl scale deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --replicas=3 -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Scale deployment in specific namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl set image deployment/&lt;name&gt; &lt;container&gt;=&lt;image&gt;</div>
+                        <div class="command-code">kubectl set image deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span> <span class="placeholder-highlight container-placeholder">my-container</span>=nginx:latest</div>
                         <div class="command-desc">Update deployment image</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl set image deployment/&lt;name&gt; &lt;container&gt;=&lt;image&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl set image deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span> <span class="placeholder-highlight container-placeholder">my-container</span>=nginx:latest -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Update deployment image in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout status deployment/&lt;name&gt;</div>
+                        <div class="command-code">kubectl rollout status deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">Check rollout status</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout status deployment/&lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl rollout status deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Check rollout status in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout history deployment/&lt;name&gt;</div>
+                        <div class="command-code">kubectl rollout history deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">View rollout history</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout undo deployment/&lt;name&gt;</div>
+                        <div class="command-code">kubectl rollout undo deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">Rollback to previous version</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout restart deployment/&lt;name&gt;</div>
+                        <div class="command-code">kubectl rollout restart deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">Restart deployment pods</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout restart deployment/&lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl rollout restart deployment/<span class="placeholder-highlight deployment-placeholder">my-deployment</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Restart deployment in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl edit deployment &lt;name&gt;</div>
+                        <div class="command-code">kubectl edit deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">Edit deployment in place</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete deployment &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span></div>
                         <div class="command-desc">Delete deployment</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete deployment &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl delete deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Delete deployment from namespace</div>
                     </div>
                 </div>
@@ -580,7 +680,7 @@
                         <div class="command-desc">List all services</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get services -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get services -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List services in specific namespace</div>
                     </div>
                     <div class="command-item">
@@ -588,19 +688,19 @@
                         <div class="command-desc">List services in all namespaces</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl expose deployment &lt;name&gt; --port=80 --type=LoadBalancer</div>
+                        <div class="command-code">kubectl expose deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --port=80 --type=LoadBalancer</div>
                         <div class="command-desc">Expose deployment as service</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl expose deployment &lt;name&gt; --port=80 --type=LoadBalancer -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl expose deployment <span class="placeholder-highlight deployment-placeholder">my-deployment</span> --port=80 --type=LoadBalancer -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Expose deployment in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe service &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe service <span class="placeholder-highlight service-placeholder">my-service</span></div>
                         <div class="command-desc">Get service details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe service &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl describe service <span class="placeholder-highlight service-placeholder">my-service</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Get service details from namespace</div>
                     </div>
                     <div class="command-item">
@@ -608,23 +708,23 @@
                         <div class="command-desc">List service endpoints</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get endpoints -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get endpoints -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List endpoints in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete service &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete service <span class="placeholder-highlight service-placeholder">my-service</span></div>
                         <div class="command-desc">Delete service</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete service &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl delete service <span class="placeholder-highlight service-placeholder">my-service</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Delete service from namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get svc &lt;name&gt; -o yaml</div>
+                        <div class="command-code">kubectl get svc <span class="placeholder-highlight service-placeholder">my-service</span> -o yaml</div>
                         <div class="command-desc">Export service as YAML</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get svc &lt;name&gt; -n &lt;namespace&gt; -o yaml</div>
+                        <div class="command-code">kubectl get svc <span class="placeholder-highlight service-placeholder">my-service</span> -n <span class="placeholder-highlight namespace-placeholder">default</span> -o yaml</div>
                         <div class="command-desc">Export service from namespace as YAML</div>
                     </div>
                 </div>
@@ -647,7 +747,7 @@
                         <div class="command-desc">List all configmaps</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get configmaps -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get configmaps -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List configmaps in namespace</div>
                     </div>
                     <div class="command-item">
@@ -655,35 +755,35 @@
                         <div class="command-desc">List configmaps in all namespaces</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-literal=key=value</div>
+                        <div class="command-code">kubectl create configmap <span class="placeholder-highlight configmap-placeholder">my-config</span> --from-literal=key=value</div>
                         <div class="command-desc">Create configmap from literal</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-literal=key=value -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl create configmap <span class="placeholder-highlight configmap-placeholder">my-config</span> --from-literal=key=value -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create configmap in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-file=&lt;path&gt;</div>
+                        <div class="command-code">kubectl create configmap <span class="placeholder-highlight configmap-placeholder">my-config</span> --from-file=/path/to/file</div>
                         <div class="command-desc">Create from file</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create configmap &lt;name&gt; --from-file=&lt;path&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl create configmap <span class="placeholder-highlight configmap-placeholder">my-config</span> --from-file=/path/to/file -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create from file in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe configmap &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe configmap <span class="placeholder-highlight configmap-placeholder">my-config</span></div>
                         <div class="command-desc">Show configmap details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe configmap &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl describe configmap <span class="placeholder-highlight configmap-placeholder">my-config</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show configmap details from namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl edit configmap &lt;name&gt;</div>
+                        <div class="command-code">kubectl edit configmap <span class="placeholder-highlight configmap-placeholder">my-config</span></div>
                         <div class="command-desc">Edit configmap</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete configmap &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete configmap <span class="placeholder-highlight configmap-placeholder">my-config</span></div>
                         <div class="command-desc">Delete configmap</div>
                     </div>
                 </div>
@@ -706,7 +806,7 @@
                         <div class="command-desc">List all secrets</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get secrets -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get secrets -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">List secrets in namespace</div>
                     </div>
                     <div class="command-item">
@@ -714,43 +814,43 @@
                         <div class="command-desc">List secrets in all namespaces</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create secret generic &lt;name&gt; --from-literal=key=value</div>
+                        <div class="command-code">kubectl create secret generic <span class="placeholder-highlight secret-placeholder">my-secret</span> --from-literal=key=value</div>
                         <div class="command-desc">Create generic secret</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create secret generic &lt;name&gt; --from-literal=key=value -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl create secret generic <span class="placeholder-highlight secret-placeholder">my-secret</span> --from-literal=key=value -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create secret in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create secret docker-registry &lt;name&gt; --docker-server=&lt;server&gt;</div>
+                        <div class="command-code">kubectl create secret docker-registry <span class="placeholder-highlight secret-placeholder">my-secret</span> --docker-server=docker.io</div>
                         <div class="command-desc">Create docker registry secret</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create secret docker-registry &lt;name&gt; --docker-server=&lt;server&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl create secret docker-registry <span class="placeholder-highlight secret-placeholder">my-secret</span> --docker-server=docker.io -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create docker secret in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe secret &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe secret <span class="placeholder-highlight secret-placeholder">my-secret</span></div>
                         <div class="command-desc">Show secret details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe secret &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl describe secret <span class="placeholder-highlight secret-placeholder">my-secret</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show secret details from namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get secret &lt;name&gt; -o yaml</div>
+                        <div class="command-code">kubectl get secret <span class="placeholder-highlight secret-placeholder">my-secret</span> -o yaml</div>
                         <div class="command-desc">Get secret in YAML</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get secret &lt;name&gt; -n &lt;namespace&gt; -o yaml</div>
+                        <div class="command-code">kubectl get secret <span class="placeholder-highlight secret-placeholder">my-secret</span> -n <span class="placeholder-highlight namespace-placeholder">default</span> -o yaml</div>
                         <div class="command-desc">Get secret from namespace in YAML</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete secret &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete secret <span class="placeholder-highlight secret-placeholder">my-secret</span></div>
                         <div class="command-desc">Delete secret</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete secret &lt;name&gt; -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl delete secret <span class="placeholder-highlight secret-placeholder">my-secret</span> -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Delete secret from namespace</div>
                     </div>
                 </div>
@@ -773,19 +873,19 @@
                         <div class="command-desc">List all ingress resources</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe ingress &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe ingress <span class="placeholder-highlight ingress-placeholder">my-ingress</span></div>
                         <div class="command-desc">Show ingress details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl edit ingress &lt;name&gt;</div>
+                        <div class="command-code">kubectl edit ingress <span class="placeholder-highlight ingress-placeholder">my-ingress</span></div>
                         <div class="command-desc">Edit ingress rules</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete ingress &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete ingress <span class="placeholder-highlight ingress-placeholder">my-ingress</span></div>
                         <div class="command-desc">Delete ingress</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get ingress &lt;name&gt; -o yaml</div>
+                        <div class="command-code">kubectl get ingress <span class="placeholder-highlight ingress-placeholder">my-ingress</span> -o yaml</div>
                         <div class="command-desc">Export ingress configuration</div>
                     </div>
                 </div>
@@ -808,19 +908,19 @@
                         <div class="command-desc">List all statefulsets</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe statefulset &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe statefulset <span class="placeholder-highlight statefulset-placeholder">my-statefulset</span></div>
                         <div class="command-desc">Show statefulset details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl scale statefulset &lt;name&gt; --replicas=3</div>
+                        <div class="command-code">kubectl scale statefulset <span class="placeholder-highlight statefulset-placeholder">my-statefulset</span> --replicas=3</div>
                         <div class="command-desc">Scale statefulset</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl rollout status statefulset &lt;name&gt;</div>
+                        <div class="command-code">kubectl rollout status statefulset <span class="placeholder-highlight statefulset-placeholder">my-statefulset</span></div>
                         <div class="command-desc">Check rollout status</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete statefulset &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete statefulset <span class="placeholder-highlight statefulset-placeholder">my-statefulset</span></div>
                         <div class="command-desc">Delete statefulset</div>
                     </div>
                     <div class="command-item">
@@ -851,15 +951,15 @@
                         <div class="command-desc">List all namespaces (shorthand)</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl create namespace &lt;name&gt;</div>
+                        <div class="command-code">kubectl create namespace <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Create new namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe namespace &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe namespace <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show namespace details</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl config set-context --current --namespace=&lt;name&gt;</div>
+                        <div class="command-code">kubectl config set-context --current --namespace=<span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Switch default namespace</div>
                     </div>
                     <div class="command-item">
@@ -867,27 +967,27 @@
                         <div class="command-desc">View current namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl delete namespace &lt;name&gt;</div>
+                        <div class="command-code">kubectl delete namespace <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Delete namespace and all resources</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get all -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get all -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Get all resources in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get pods,svc,deploy -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl get pods,svc,deploy -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Get specific resource types in namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl label namespace &lt;name&gt; &lt;key&gt;=&lt;value&gt;</div>
+                        <div class="command-code">kubectl label namespace <span class="placeholder-highlight namespace-placeholder">default</span> environment=production</div>
                         <div class="command-desc">Add label to namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get namespace &lt;name&gt; -o yaml</div>
+                        <div class="command-code">kubectl get namespace <span class="placeholder-highlight namespace-placeholder">default</span> -o yaml</div>
                         <div class="command-desc">Export namespace configuration</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl top pods -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl top pods -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show resource usage in namespace</div>
                     </div>
                     <div class="command-item">
@@ -918,7 +1018,7 @@
                         <div class="command-desc">List all nodes</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe node &lt;name&gt;</div>
+                        <div class="command-code">kubectl describe node <span class="placeholder-highlight node-placeholder">node-1</span></div>
                         <div class="command-desc">Show node details</div>
                     </div>
                     <div class="command-item">
@@ -926,15 +1026,15 @@
                         <div class="command-desc">Display node resource usage</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl cordon &lt;node&gt;</div>
+                        <div class="command-code">kubectl cordon <span class="placeholder-highlight node-placeholder">node-1</span></div>
                         <div class="command-desc">Mark node as unschedulable</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl drain &lt;node&gt;</div>
+                        <div class="command-code">kubectl drain <span class="placeholder-highlight node-placeholder">node-1</span></div>
                         <div class="command-desc">Drain node for maintenance</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl uncordon &lt;node&gt;</div>
+                        <div class="command-code">kubectl uncordon <span class="placeholder-highlight node-placeholder">node-1</span></div>
                         <div class="command-desc">Mark node as schedulable</div>
                     </div>
                 </div>
@@ -957,7 +1057,7 @@
                         <div class="command-desc">View recent cluster events</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get events -n &lt;namespace&gt; --sort-by='.lastTimestamp'</div>
+                        <div class="command-code">kubectl get events -n <span class="placeholder-highlight namespace-placeholder">default</span> --sort-by='.lastTimestamp'</div>
                         <div class="command-desc">View events in specific namespace</div>
                     </div>
                     <div class="command-item">
@@ -969,7 +1069,7 @@
                         <div class="command-desc">Show pod resource usage</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl top pods -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl top pods -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Show pod usage in namespace</div>
                     </div>
                     <div class="command-item">
@@ -977,23 +1077,23 @@
                         <div class="command-desc">Show pod usage across all namespaces</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl describe pod &lt;pod&gt; | grep -A 5 Events</div>
+                        <div class="command-code">kubectl describe pod <span class="placeholder-highlight pod-placeholder">my-pod</span> | grep -A 5 Events</div>
                         <div class="command-desc">Check pod events</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs &lt;pod&gt; --previous</div>
+                        <div class="command-code">kubectl logs <span class="placeholder-highlight pod-placeholder">my-pod</span> --previous</div>
                         <div class="command-desc">Get previous container logs</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl logs &lt;pod&gt; --previous -n &lt;namespace&gt;</div>
+                        <div class="command-code">kubectl logs <span class="placeholder-highlight pod-placeholder">my-pod</span> --previous -n <span class="placeholder-highlight namespace-placeholder">default</span></div>
                         <div class="command-desc">Get previous logs from namespace</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl get pod &lt;pod&gt; -o jsonpath='{.status.phase}'</div>
+                        <div class="command-code">kubectl get pod <span class="placeholder-highlight pod-placeholder">my-pod</span> -o jsonpath='{.status.phase}'</div>
                         <div class="command-desc">Check pod status</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl debug node/&lt;node&gt; -it --image=ubuntu</div>
+                        <div class="command-code">kubectl debug node/<span class="placeholder-highlight node-placeholder">node-1</span> -it --image=ubuntu</div>
                         <div class="command-desc">Debug node with container</div>
                     </div>
                     <div class="command-item">
@@ -1001,7 +1101,7 @@
                         <div class="command-desc">Create temporary debug pod</div>
                     </div>
                     <div class="command-item">
-                        <div class="command-code">kubectl run tmp-shell --rm -i --tty --image ubuntu -n &lt;namespace&gt; -- /bin/bash</div>
+                        <div class="command-code">kubectl run tmp-shell --rm -i --tty --image ubuntu -n <span class="placeholder-highlight namespace-placeholder">default</span> -- /bin/bash</div>
                         <div class="command-desc">Create debug pod in namespace</div>
                     </div>
                     <div class="command-item">
@@ -1035,6 +1135,34 @@
     <div class="copy-hint" id="copyHint">Command copied! 📋</div>
 
     <script>
+        // Dynamic input handling
+        const inputMappings = {
+            'podName': 'pod-placeholder',
+            'namespace': 'namespace-placeholder',
+            'serviceName': 'service-placeholder',
+            'deploymentName': 'deployment-placeholder',
+            'containerName': 'container-placeholder',
+            'nodeName': 'node-placeholder',
+            'configMapName': 'configmap-placeholder',
+            'secretName': 'secret-placeholder',
+            'statefulSetName': 'statefulset-placeholder',
+            'ingressName': 'ingress-placeholder'
+        };
+
+        // Update placeholders when input changes
+        Object.keys(inputMappings).forEach(inputId => {
+            const input = document.getElementById(inputId);
+            const placeholderClass = inputMappings[inputId];
+            
+            input.addEventListener('input', (e) => {
+                const value = e.target.value || e.target.placeholder;
+                const placeholders = document.querySelectorAll(`.${placeholderClass}`);
+                placeholders.forEach(placeholder => {
+                    placeholder.textContent = value;
+                });
+            });
+        });
+
         // Category navigation
         const categoryBtns = document.querySelectorAll('.category-btn');
         const sections = document.querySelectorAll('.command-section');
@@ -1063,6 +1191,7 @@
 
         commandCodes.forEach(code => {
             code.addEventListener('click', () => {
+                // Get the text content but replace spans with their text
                 const text = code.textContent;
                 navigator.clipboard.writeText(text).then(() => {
                     copyHint.classList.add('show');
